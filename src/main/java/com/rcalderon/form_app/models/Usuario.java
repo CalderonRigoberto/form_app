@@ -1,16 +1,43 @@
 package com.rcalderon.form_app.models;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import com.rcalderon.form_app.validators.IdentificadorRegex;
+import com.rcalderon.form_app.validators.RequeridoValidator;
 
 public class Usuario {
 
+    /// Clase messages.properties es interpretado
+    /// para sobrescribir los mensajes de error con las notaciones de @Validation
+
+    /// Todas las propiedades de validación tienen un atributo para
+    /// personalizar el mensaje cuando no se cumple de manera correcta
+    /// el campo.
+
     // Distinto de null y no vacío
+    // Patron de expresion regular
+    // @Pattern(regexp = "[0-9]{2}[.][\\d]{3}[.][\\d]{3}[-][A-Z]{1}", message = "No
+    // cumple con los caracteres debidos")
+    @IdentificadorRegex
+    private String idUsuario;
+
     @NotEmpty
+    @Size /// Unicamente para cadenas de texto
     private String username;
-    @NotEmpty
+    @NotBlank(message = "El password no puede contener espacios vacíos")
     private String password;
     @NotEmpty
+    @Email(message = "Ingresa un email válido") // Válida que sea en formato email
     private String email;
+    // @NotEmpty
+    @RequeridoValidator
+    private String nombre;
+    // @NotEmpty
+    @RequeridoValidator
+    private String apellido;
 
     public String getUsername() {
         return username;
@@ -18,6 +45,14 @@ public class Usuario {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getPassword() {
@@ -34,6 +69,22 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
 }
