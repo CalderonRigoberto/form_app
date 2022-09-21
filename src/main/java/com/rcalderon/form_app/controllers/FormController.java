@@ -3,23 +3,41 @@ package com.rcalderon.form_app.controllers;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.util.*;
-
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.rcalderon.form_app.models.Usuario;
+import com.rcalderon.form_app.validators.UserValid;
 
 @Controller
+/// Notación @SessionAtributte ayuda a mantener el estado en la sesión http
+@SessionAttributes("user")
 public class FormController {
+    @Autowired
+    private UserValid userValid;
+
+    // Se inyecta directamente, ya que se uso una clase personalizada
+    /// Lo que hace es instanciar el validador
+    /// por debajo maneja interceptores
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Establece un validator pero para añadir es add
+        binder.addValidators(userValid);
+    }
 
     @GetMapping({ "/form", "/", "" })
     public String form(Model model) {
         Usuario usuario = new Usuario();
+
         model.addAttribute("user", usuario);
         return "form";
     }
@@ -43,24 +61,28 @@ public class FormController {
 
             @Valid @ModelAttribute("user") Usuario user,
             BindingResult results,
-            Model model) {
-
+            Model model,
+            SessionStatus satus) {
+        /// Implementando validación a través del metodo de manera explicita
+        // userValid.validate(user, results);
         if (results.hasErrors()) {
             /// Se hace un map con los errores por campo
-            Map<String, String> getErrors = new HashMap<>();
-            results.getFieldErrors().forEach(
-                    element -> {
-                        getErrors.put(element.getField(),
-                                "El campo".concat(element.getField()).concat(" es requerido"));
-                    });
+            /**
+             * Map<String, String> getErrors = new HashMap<>();
+             * results.getFieldErrors().forEach(
+             * element -> {
+             * getErrors.put(element.getField(),
+             * "El campo ".concat(element.getField()).concat(" es requerido"));
+             * });
+             */
             // Retorna los errores
-            model.addAttribute("error", getErrors);
             return "form";
         }
 
         /// Si no se cumple la condición, entonces retorna usuario en la vista
         /// result
         model.addAttribute("user", user);
+        satus.setComplete();
         return "result";
 
     }
