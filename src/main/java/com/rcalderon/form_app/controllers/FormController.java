@@ -3,9 +3,14 @@ package com.rcalderon.form_app.controllers;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.CustomEditorConfigurer;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +37,12 @@ public class FormController {
     public void initBinder(WebDataBinder binder) {
         // Establece un validator pero para añadir es add
         binder.addValidators(userValid);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        format.setLenient(false); // Define si el analizador es estricto o tolerante
+        // Custom editor forma parte de spring
+        // Se mando el tipo requerido
+        // Y dentro del custom editor se manda nuestro formato no permitiendo vacíos
+        binder.registerCustomEditor(Date.class, "birthday", new CustomDateEditor(format, false));
     }
 
     @GetMapping({ "/form", "/", "" })
