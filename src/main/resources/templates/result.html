@@ -7,9 +7,14 @@
     <title>Resultado nuevo</title>
 </head>
 <body>
+    <h1 th:text="${user.getNombre()}"></h1>
     <h1 th:text="${user.getUsername()}"></h1>
     <h2 th:text="${user.getPassword()}"></h2>
     <h3 th:text="${user.getEmail()}"></h3>
     <h3 th:text="${user.getIdUsuario()}"></h3>
+    <!--DE ETA MANERA LE DAS UN FORMATO EN LA VISTA A UNA FECHA-->
+    <h3 th:text="${#dates.format(user.getBirthday(), 'dd/MM/yyyy')}"></h3>
+    <h3 th:text="${user.getPais()}"></h3>
+
 </body>
 </html>

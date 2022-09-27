@@ -80,6 +80,17 @@
             <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
         </div>
         <div>
+            <label for="pais">Selecciona un país</label>
+            <div>
+                <select  id="pais" th:field="*{pais}">
+                    <option value="">Selecciona un pais</option>
+                    <option th:each="pais: ${paises}" th:value="${pais}" th:text="${pais}"></option>
+                   
+                  </select>
+            </div>
+            <div th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></div>
+        </div>
+        <div>
             <div>
                 <input type="submit" value="Enviar">
             </div>
