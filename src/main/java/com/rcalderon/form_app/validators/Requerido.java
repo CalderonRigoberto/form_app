@@ -8,7 +8,7 @@ public class Requerido implements ConstraintValidator<RequeridoValidator, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value.isEmpty() || org.springframework.util.StringUtils.hasText(value))
+        if (value.isEmpty() || !org.springframework.util.StringUtils.hasText(value))
             return false;
         return true;
     }
