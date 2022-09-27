@@ -4,7 +4,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.rcalderon.form_app.editors.NombreMayusculaEditor;
 import com.rcalderon.form_app.models.Usuario;
 import com.rcalderon.form_app.validators.UserValid;
 
@@ -43,6 +46,12 @@ public class FormController {
         // Se mando el tipo requerido
         // Y dentro del custom editor se manda nuestro formato no permitiendo vacíos
         binder.registerCustomEditor(Date.class, "birthday", new CustomDateEditor(format, false));
+        binder.registerCustomEditor(String.class, "nombre", new NombreMayusculaEditor());
+    }
+
+    @ModelAttribute("paises")
+    public List<String> piases() {
+        return Arrays.asList("Suecia", "Islandia", "Mexico", "España");
     }
 
     @GetMapping({ "/form", "/", "" })
