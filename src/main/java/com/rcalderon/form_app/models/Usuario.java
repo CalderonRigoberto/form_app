@@ -52,8 +52,27 @@ public class Usuario {
     @NotNull
     private Date birthday;
 
+    // @NotEmpty
+    @RequeridoValidator
+    private String nombre;
+    // @NotEmpty
+    @RequeridoValidator
+    private String apellido;
+
+    // Not empty -> por que es un string
+    @NotEmpty
+    private String pais;
+
     public Date getBirthday() {
         return birthday;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
     public void setBirthday(Date birthday) {
@@ -67,13 +86,6 @@ public class Usuario {
     public void setCuenta(Integer cuenta) {
         this.cuenta = cuenta;
     }
-
-    // @NotEmpty
-    @RequeridoValidator
-    private String nombre;
-    // @NotEmpty
-    @RequeridoValidator
-    private String apellido;
 
     public String getUsername() {
         return username;
